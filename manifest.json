@@ -8,6 +8,7 @@ permalink: manifest.json
   "background_color": "#1c2128",
   "name": "{{ site.manifest_name }}",
   "short_name": "{{ site.manifest_short_name }}",
+  "start_url": "https://titenko.github.io/staff-tabs/",
   "display": "{{ site.manifest_display}}",
   "icons": [
         {
