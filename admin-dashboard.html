@@ -1,0 +1,87 @@
+---
+title: Admin Dashboard
+layout: default-tabs
+---
+
+<div style="display: flex; justify-content: space-between; align-items: baseline;" class="header-article">  
+  <button id="logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+<h1>{{ page.title }}</h1>
+</div>
+
+  <script>
+    var logoutButton = document.getElementById('logout');
+    logoutButton.addEventListener('click', function() {
+      sessionStorage.removeItem('auth');
+      window.location.href = '{{ site.baseurl }}/login';
+    });
+  </script>
+
+<script>
+  var authKey = 'auth_admin'; // Используем ключ сессии для администратора
+  var form = document.querySelector('form');
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    var password = document.querySelector('#password').value;
+    if (password === 'admin') {
+      sessionStorage.setItem(authKey, 'true');
+      window.location.href = '{{ site.baseurl }}/admin-dashboard';
+    } else {
+      alert('Incorrect password');
+    }
+  });
+  // Проверяем авторизацию при загрузке страницы
+  if (!sessionStorage.getItem(authKey)) {
+    window.location.href = '{{ site.baseurl }}/auth';
+  }
+</script>
+
+<div style="text-align: center">
+<a href="{{ site.baseurl }}/delivery-staff" class="main-buttons">Delivery</a>
+<br>
+<a href="{{ site.baseurl }}/schedule-staff" class="main-buttons">Schedule Staff</a>
+<br>
+<a href="{{ site.baseurl }}/schedule-drivers" class="main-buttons">Schedule drivers</a>
+<br>
+<a href="{{ site.baseurl }}/drivers-test" class="main-buttons">Delivery of consumables</a>
+<br>
+<a href="{{ site.baseurl }}/raport" class="main-buttons">Raport</a>
+</div>
+
+<style>
+
+button[id="logout"] {
+  display: block;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #347d39;
+  color: #fff;
+  font-size: 16px;
+  font-family: sans-serif;
+  cursor: pointer;
+}
+
+.main-buttons {
+    text-transform: none;
+    font-size: 16pt;
+    display: inline-block;
+    padding: 15px 15px;
+    background: #347d39;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    width: 300px;
+    margin: 30px auto;
+}
+
+.read-back {
+    text-transform: none;
+    font-size: 15px;
+    display: inline-block;
+    padding: 10px 15px;
+    background: #347d39;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+  }
+</style>

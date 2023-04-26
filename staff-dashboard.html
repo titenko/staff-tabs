@@ -1,0 +1,65 @@
+---
+title: Staff Dashboard
+layout: default-tabs
+---
+
+<div style="display: flex; justify-content: space-between; align-items: baseline;" class="header-article">  
+  <button id="logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+<h1>{{ page.title }}</h1>
+</div>
+
+<div style="text-align: center">
+<a href="{{ site.baseurl }}/delivery-staff" class="main-buttons">Delivery</a>
+<br>
+<a href="{{ site.baseurl }}/schedule-staff" class="main-buttons">Schedule Staff</a>
+</div>
+  
+  <script>
+    var logoutButton = document.getElementById('logout');
+    logoutButton.addEventListener('click', function() {
+      sessionStorage.removeItem('auth');
+      window.location.href = '{{ site.baseurl }}/login';
+    });
+  </script>
+
+<style>
+.wrapper-footer {
+    position: fixed;
+}
+
+.main-buttons {
+    text-transform: none;
+    font-size: 16pt;
+    display: inline-block;
+    padding: 15px 15px;
+    background: #347d39;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    width: 300px;
+    margin: 30px auto;
+}
+
+button[id="logout"] {
+  display: block;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #347d39;
+  color: #fff;
+  font-size: 16px;
+  font-family: sans-serif;
+  cursor: pointer;
+}
+
+.read-back {
+    text-transform: none;
+    font-size: 15px;
+    display: inline-block;
+    padding: 10px 15px;
+    background: #347d39;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+  }
+</style>

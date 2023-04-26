@@ -1,0 +1,49 @@
+---
+title: Delivery
+layout: default-tabs
+---
+
+<div style="display: flex; justify-content: space-between; align-items: baseline;" class="header-article">  
+  <button id="back"><i class="fas fa-reply"> </i> Back to Staff Dashboard</button>
+<h1>{{ page.title }}</h1>
+</div>
+
+<script>
+    var logoutButton = document.getElementById('back');
+    logoutButton.addEventListener('click', function() {
+      sessionStorage.removeItem('auth');
+      window.location.href = '{{ site.baseurl }}/staff-dashboard';
+    });
+  </script>
+
+<div style="left: 0; width: 100%; height: 2003px; position: relative;">
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfTNjsb2GrPnRBSBgxrnmi1LUwNmBPFLu2GA8MXAPffpJ_jxg/viewform?embedded=true"></iframe>
+</div>
+
+<style>
+iframe {
+border:0px;
+height:100%;
+width:100%;
+position: absolute;
+left: 0;
+right: 0;
+top: 0;
+bottom: 0;
+}
+
+button[id="back"] {
+  display: block;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #347d39;
+  color: #fff;
+  font-size: 16px;
+  font-family: sans-serif;
+  cursor: pointer;
+}
+
+</style>
+
+

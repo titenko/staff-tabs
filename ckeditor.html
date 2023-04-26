@@ -1,0 +1,13 @@
+---
+layout: default-tabs
+---
+
+<textarea name="editor"></textarea>
+    <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
+        <script>
+        ClassicEditor
+            .create( document.querySelector( 'textarea[name="editor"]' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>

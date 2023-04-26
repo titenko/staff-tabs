@@ -1,0 +1,148 @@
+---
+layout: default-tabs
+---
+
+<p style="text-align: center;"><img src="{{ site.baseurl }}/images/apname.png" width="512px" height="auto" /></p>
+
+<h1 style="text-align: center; color: #fff; font-size: 16pt; margin: 15px 0;">KEEP CONNECTED, ON THE GO</h1>
+
+<hr>
+
+<div id="digital-clock"></div>
+
+<script>
+  function showDigitalClock() {
+    var date = new Date();
+    var options = { timeZone: 'Europe/Warsaw' };
+    var time = date.toLocaleTimeString('pl-PL', options);
+    var dateString = date.toLocaleDateString('pl-PL');
+
+    var digitalClock = document.getElementById("digital-clock");
+    digitalClock.innerHTML = time + "<span>" + dateString + "</span>";
+  }
+
+  showDigitalClock();
+  setInterval(showDigitalClock, 1000);
+</script>
+
+<hr>
+
+<div id="calendar-widget"></div>
+
+<script>
+  function CalendarWidget() {
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth();
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+    var firstDay = new Date(year, month, 1).getDay();
+    var startingDay = firstDay === 0 ? 6 : firstDay - 1; // Вычисление первого дня недели с учетом того, что первый день недели понедельник
+
+    var monthNames = [
+      "Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec",
+      "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"
+    ];
+    var dayNames = ["Pn", "Wt", "Śr", "Cz", "Pt", "So", "Nd"];
+
+    var calendarWidget = document.getElementById("calendar-widget");
+    calendarWidget.innerHTML = "";
+
+    var header = "<h2>" + monthNames[month] + " " + year + "</h2>";
+    calendarWidget.innerHTML += header;
+
+    var table = "<table>" +
+                  "<tr>" +
+                    "<th>" + dayNames[0] + "</th>" +
+                    "<th>" + dayNames[1] + "</th>" +
+                    "<th>" + dayNames[2] + "</th>" +
+                    "<th>" + dayNames[3] + "</th>" +
+                    "<th>" + dayNames[4] + "</th>" +
+                    "<th>" + dayNames[5] + "</th>" +
+                    "<th>" + dayNames[6] + "</th>" +
+                  "</tr>";
+
+    var day = 1;
+    for (var i = 0; i < 6; i++) {
+      table += "<tr>";
+      for (var j = 0; j < 7; j++) {
+        if ((i == 0 && j < startingDay) || day > daysInMonth) {
+          table += "<td></td>";
+        } else {
+          var selected = "";
+          if (now.getDate() == day && now.getMonth() == month && now.getFullYear() == year) {
+            selected = "selected";
+          }
+          table += "<td class='" + selected + "'>" + day + "</td>";
+          day++;
+        }
+      }
+      table += "</tr>";
+    }
+
+    table += "</table>";
+    calendarWidget.innerHTML += table;
+  }
+
+  CalendarWidget();
+</script>
+
+<style>
+  #digital-clock {
+    background-color: #22272e;
+    color: #adbac7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 20px;
+    height: 50px;
+  }
+
+  #digital-clock span {
+    font-size: 0.5em;
+    margin-top: 0.5em;
+  }
+  hr {
+  background-color: #444c56;
+  height: 1px;
+  border: none;
+  margin: 5px;  
+  }
+   #calendar-widget {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    background-color: #22272e;
+    text-align: center;
+    padding: 10px;
+    color: #adbac7;
+  }
+  #calendar-widget h2 {
+    color: #adbac7;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  #calendar-widget table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  #calendar-widget th {
+    background-color: #ccc;
+    color: #222;
+    font-weight: normal;
+    padding: 5px;
+    text-align: center;
+  }
+  #calendar-widget td {
+    border: 1px solid #444c56;
+    padding: 5px;
+    text-align: center;
+  }
+  #calendar-widget td.selected {
+    background-color: #ddd;
+    color: #222;
+  }
+  #calendar-widget tr {
+    height: 34px;
+  }      
+</style>

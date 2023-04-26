@@ -1,0 +1,360 @@
+---
+layout: default-tabs
+---
+
+<p style="text-align: center;"><img src="{{ site.baseurl }}/images/apname.png" width="512px" height="auto" /></p>
+
+<h1 style="text-align: center; color: #fff; font-size: 16pt; margin: 15px 0;">KEEP CONNECTED, ON THE GO</h1>
+
+
+<hr>
+
+<div id="digital-clock"></div>
+
+<style>
+  #digital-clock {
+    
+    color: #adbac7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 3em;
+    height: 150px;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    background-color: #22272e;
+    border: 1px solid #444c56;
+  }
+
+  #digital-clock span {
+    font-size: 0.5em;
+    margin-top: 0.5em;
+  }
+</style>
+
+<script>
+  function showDigitalClock() {
+    var date = new Date();
+    var options = { timeZone: 'Europe/Warsaw' };
+    var time = date.toLocaleTimeString('pl-PL', options);
+    var dateString = date.toLocaleDateString('pl-PL');
+
+    var digitalClock = document.getElementById("digital-clock");
+    digitalClock.innerHTML = time + "<span>" + dateString + "</span>";
+  }
+
+  showDigitalClock();
+  setInterval(showDigitalClock, 1000);
+</script>
+
+<hr>
+
+<a class="weatherwidget-io" href="https://forecast7.com/pl/50d0619d94/krakow/" data-label_1="KRAKÓW" data-label_2="WEATHER" data-theme="original" data-basecolor="#22272e" data-textcolor="#adbac7" >KRAKÓW WEATHER</a>
+<script>
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+</script>
+
+<style>
+.weatherwidget-io {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    background-color: #22272e;
+    border: 1px solid #444c56;
+}
+</style>
+
+<hr>
+
+<div id="calendar-widget"></div>
+
+<style>
+  #calendar-widget {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    background-color: #22272e;
+    text-align: center;
+    padding: 10px;
+    color: #adbac7;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    background-color: #22272e;
+    border: 1px solid #444c56;
+  }
+  #calendar-widget h2 {
+    color: #adbac7;
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  #calendar-widget table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  #calendar-widget th {
+    background-color: #ccc;
+    color: #222;
+    font-weight: normal;
+    padding: 5px;
+    text-align: center;
+  }
+  #calendar-widget td {
+    border: 1px solid #444c56;
+    padding: 5px;
+    text-align: center;
+  }
+  #calendar-widget td.selected {
+    background-color: #ddd;
+    color: #222;
+  }
+  #calendar-widget tr {
+    height: 34px;
+}  
+
+</style>
+
+<script>
+  function CalendarWidget() {
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth();
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+    var firstDay = new Date(year, month, 1).getDay();
+    var startingDay = firstDay === 0 ? 6 : firstDay - 1; // Вычисление первого дня недели с учетом того, что первый день недели понедельник
+
+    var monthNames = [
+      "Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec",
+      "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"
+    ];
+    var dayNames = ["Pn", "Wt", "Śr", "Cz", "Pt", "So", "Nd"];
+
+    var calendarWidget = document.getElementById("calendar-widget");
+    calendarWidget.innerHTML = "";
+
+    var header = "<h2>" + monthNames[month] + " " + year + "</h2>";
+    calendarWidget.innerHTML += header;
+
+    var table = "<table>" +
+                  "<tr>" +
+                    "<th>" + dayNames[0] + "</th>" +
+                    "<th>" + dayNames[1] + "</th>" +
+                    "<th>" + dayNames[2] + "</th>" +
+                    "<th>" + dayNames[3] + "</th>" +
+                    "<th>" + dayNames[4] + "</th>" +
+                    "<th>" + dayNames[5] + "</th>" +
+                    "<th>" + dayNames[6] + "</th>" +
+                  "</tr>";
+
+    var day = 1;
+    for (var i = 0; i < 6; i++) {
+      table += "<tr>";
+      for (var j = 0; j < 7; j++) {
+        if ((i == 0 && j < startingDay) || day > daysInMonth) {
+          table += "<td></td>";
+        } else {
+          var selected = "";
+          if (now.getDate() == day && now.getMonth() == month && now.getFullYear() == year) {
+            selected = "selected";
+          }
+          table += "<td class='" + selected + "'>" + day + "</td>";
+          day++;
+        }
+      }
+      table += "</tr>";
+    }
+
+    table += "</table>";
+    calendarWidget.innerHTML += table;
+  }
+
+  CalendarWidget();
+</script>
+
+<hr>
+<h2 style="text-align: center; color: #adbac7;">News</h2>
+
+<div class="news-button">
+  <button class="news-source" data-url="https://www.tvn24.pl/najnowsze.xml">tvn24</button>
+  <button class="news-source" data-url="http://krakow.naszemiasto.pl/rss/artykuly/511.html?201012">naszemiasto</button>
+  <button class="news-source" data-url="http://www.krakow.pl/komunikaty/rss/rss_krakow.xml">krakow.pl</button>
+</div>
+<hr>
+
+	<div id="news-feed"></div>
+
+<style>
+.news-button {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.news-source {
+  text-transform: none;
+  font-size: 15px;
+  display: inline-block;
+  padding: 5px 15px;
+  background: #347d39;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  border: 1px solid #444c56;
+  width: 150px;
+  margin: 0 10px;
+}
+
+#news-feed ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#news-feed li {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  background-color: #22272e;
+  border: 1px solid #444c56;
+}
+
+#news-feed h3 {
+  margin: 0 0 10px;
+}
+
+#news-feed img {
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#news-feed span {
+  font-size: 12px;
+  color: #999;
+}
+
+#news-feed .read-more {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #347d39;
+  color: #fff;
+  text-decoration: none;
+}
+
+#news-feed p {
+  word-wrap: break-word;
+}
+
+.feed-image {
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0;
+  display: block;
+}
+
+</style>
+
+<script>
+ $(document).ready(function() {
+  var rssFeedUrls = [
+    "https://www.tvn24.pl/najnowsze.xml",
+    "http://krakow.naszemiasto.pl/rss/artykuly/511.html?201012",
+    "http://www.krakow.pl/komunikaty/rss/rss_krakow.xml"
+  ];
+  var numPosts = 50;
+  var feedWidget = $("#news-feed");
+
+  function feedLoaded(result) {
+  if (result.status == "ok") {
+    var feedEntries = result.items;
+    feedEntries.sort(function(a, b) {
+      return new Date(b.pubDate) - new Date(a.pubDate);
+    });
+
+    var feedList = "<ul>";
+    for (var i = 0; i < feedEntries.length; i++) {
+      var feedEntry = feedEntries[i];
+      var pubDate = new Date(feedEntry.pubDate);
+      var pubDateFormatted = pubDate.toLocaleDateString();
+      var pubTimeFormatted = pubDate.toLocaleTimeString();
+
+      
+
+      var source = "";
+      if (result.feed && result.feed.title) {
+        source = "News source: " + result.feed.title;
+      }
+
+      feedList += "<li><h3>" + feedEntry.title + "</h3>";
+      feedList += "<br />" + feedEntry.content + "<br />";
+      feedList += "<br /><span>" + pubDateFormatted + " " + pubTimeFormatted + "</span>";
+      feedList += "<br />" + source;
+      feedList += "<br /><a href='" + feedEntry.link + "' target='_blank' class='read-more'>Read more</a></li>";
+    }
+    feedList += "</ul>";
+
+    feedWidget.html(feedList);
+  }
+}
+
+  function loadFeeds(url) {
+    $.ajax({
+      url: "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(url) + "&sortby=pubDate",
+      success: feedLoaded,
+      error: function(result) {
+        console.log(result);
+      }
+    });
+  }
+
+  // Обработка нажатий на кнопки
+  $(".news-source").on("click", function() {
+    var url = $(this).data("url");
+    loadFeeds(url);
+  });
+
+  // Загружаем первый источник при загрузке страницы
+  loadFeeds(rssFeedUrls[0]);
+});
+
+  // Обновляем новости каждые 5 минут
+  setInterval(function() {
+    loadFeeds();
+  }, 5 * 60 * 1000);
+</script>
+
+
+<style>
+hr {
+  background-color: #444c56;
+  height: 1px;
+  border: none;
+  margin: 25px;  
+}
+
+.read-more {
+    text-transform: none;
+    font-size: 15px;
+    display: inline-block;
+    padding: 5px 15px;
+    background: #347d39;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-top: 15px;
+  }
+
+ul {
+        list-style-type: none;
+    }
+
+</style>
