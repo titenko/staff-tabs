@@ -1,0 +1,264 @@
+---
+title: News
+layout: default-tabs
+---
+
+<div style="display: flex; justify-content: space-between; align-items: baseline;" class="header-article">  
+  <button id="back"><i class="fas fa-sign-out-alt"></i> Back Home</button>
+<h1>{{ page.title }}</h1>
+</div>
+
+<script>
+    var logoutButton = document.getElementById('back');
+    logoutButton.addEventListener('click', function() {
+      sessionStorage.removeItem('auth');
+      window.location.href = '{{ site.baseurl }}/';
+    });
+  </script>
+
+<ul id="news-feed"></ul>
+<div class="pagination"></div>
+
+<script>
+  const feedUrls = [
+    'https://www.tvn24.pl/najnowsze.xml',
+    'http://krakow.naszemiasto.pl/rss/artykuly/511.html?201012',
+    'http://www.krakow.pl/komunikaty/rss/rss_krakow.xml',
+    'http://www.tvn24.pl/krakow,50.xml'
+  ];
+
+  const newsList = document.querySelector('#news-feed');
+
+  const fetchFeeds = async (url) => {
+    const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.items.map(item => {
+      item.source = data.feed.title;
+      return item;
+    });
+  };
+
+  const processFeeds = (feeds) => {
+    const items = feeds.flat().sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+    items.forEach(item => {
+      const listItem = document.createElement('li');
+      listItem.classList.add('news-item');
+      listItem.innerHTML = `
+        <h3>${item.title}</h3>
+        <img src="${item.enclosure ? item.enclosure.link : ''}" class="feed-image" alt="">
+        <span>${new Date(item.pubDate).toLocaleString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric' })} - ${item.source}</span>
+        <p>${item.description}</p>
+        <a href="${item.link}" class="read-more" target="_blank">Read more</a>
+      `;
+      newsList.appendChild(listItem);
+    });
+    paginateNews();
+  };
+
+  const paginateNews = () => {
+    const newsItems = Array.from(document.querySelectorAll('.news-item'));
+    const itemsPerPage = 100;
+    const totalPages = Math.ceil(newsItems.length / itemsPerPage);
+
+    newsItems.forEach((item, index) => {
+      item.style.display = 'none';
+      if (index < itemsPerPage) {
+        item.style.display = 'block';
+      }
+    });
+
+    const pagination = document.querySelector('.pagination');
+    pagination.innerHTML = '';
+    pagination.insertAdjacentHTML('beforeend', `<a href="#" class="prev">«</a>`);
+    for (let i = 1; i <= totalPages; i++) {
+      pagination.insertAdjacentHTML('beforeend', `<a href="#">${i}</a>`);
+    }
+    pagination.insertAdjacentHTML('beforeend', `<a href="#" class="next">»</a>`);
+    pagination.querySelector('a:nth-child(2)').classList.add('active');
+
+    const links = Array.from(document.querySelectorAll('.pagination a'));
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const current = pagination.querySelector('.active');
+        const prev = current.previousElementSibling;
+        const next = current.nextElementSibling;
+
+        if (link === prev) {
+          current.classList.remove('active');
+          prev.classList.add('active');
+        } else if (link === next) {
+          current.classList.remove('active');
+          next.classList.add('active');
+        } else {
+          current.classList.remove('active');
+          link.classList.add('active');
+        }
+
+        const currentPage = parseInt(pagination.querySelector('.active').textContent);
+        newsItems.forEach((item,index) => {
+const start = (currentPage - 1) * itemsPerPage;
+const end = currentPage * itemsPerPage;
+if (index >= start && index < end) {
+item.style.display = 'block';
+} else {
+item.style.display = 'none';
+}
+});
+});
+});
+};
+
+const init = async () => {
+try {
+const feeds = await Promise.all(feedUrls.map(url => fetchFeeds(url)));
+processFeeds(feeds);
+} catch (error) {
+console.error(error);
+}
+};
+
+init();
+</script>
+
+<style>
+
+button[id="back"] {
+  display: block;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #347d39;
+  color: #fff;
+  font-size: 16px;
+  font-family: sans-serif;
+  cursor: pointer;
+}
+
+ul {
+margin: 0;
+padding: 0;
+}
+
+.news-button {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.news-source {
+  text-transform: none;
+  font-size: 15px;
+  display: inline-block;
+  padding: 5px 15px;
+  background: #347d39;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  border: 1px solid #444c56;
+  width: 150px;
+  margin: 0 10px;
+}
+
+#news-feed ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#news-feed li {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  background-color: #22272e;
+  border: 1px solid #444c56;
+      display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: baseline;  
+}
+
+#news-feed h3 {
+  margin: 0 0 10px;
+}
+
+#news-feed img {
+  width: 100%;
+  height: auto;
+  margin: 10px 0;
+  
+}
+
+#news-feed span {
+  font-size: 12px;
+  color: #999;
+}
+
+#news-feed .read-more {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #347d39;
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-family: sans-serif;
+  cursor: pointer;
+}
+
+#news-feed p {
+  word-wrap: break-word;
+      display: flex;
+    flex-direction: column;
+    
+}
+
+.feed-image {
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0;
+  display: block;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .pagination a {
+    color: #555;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 5px;
+    padding: 5px 10px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .pagination a:hover {
+    background-color: #555;
+    color: #fff;
+  }
+
+  .pagination a.active {
+    background-color: #555;
+    color: #fff;
+    cursor: default;
+  }
+
+  .pagination a.disabled {
+    color: #999;
+    cursor: default;
+  }
+
+</style>
+
+
