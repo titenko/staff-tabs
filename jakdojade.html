@@ -1,0 +1,35 @@
+---
+title: Jakdojade
+layout: default-tabs
+---
+
+<div style="display: flex; justify-content: space-between; align-items: baseline;" class="header-article">  
+  <button id="back"><i class="fas fa-sign-out-alt"></i> Back Home</button>
+<h1>{{ page.title }}</h1>
+</div>
+
+<script>
+    var logoutButton = document.getElementById('back');
+    logoutButton.addEventListener('click', function() {
+      sessionStorage.removeItem('auth');
+      window.location.href = '{{ site.baseurl }}/';
+    });
+</script>
+
+<style>
+button[id="back"] {
+  display: block;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #347d39;
+  color: #fff;
+  font-size: 16px;
+  font-family: sans-serif;
+  cursor: pointer;
+}
+</style>
+
+<jakdojade-planner-widget city-symbol="KRAKOW" locale="pl" max-res="5" theme="jd-purple">
+</jakdojade-planner-widget>
+<script src="https://jakdojade.pl/widgets/elements.js"></script>
