@@ -87,6 +87,8 @@ manifest_background_color: Black
 manifest_short_name: Staff
 manifest_display: standalone
 
+include:
+  - assets
 # Exclude these files from your production _site
 exclude:
   - Gemfile
