@@ -1,0 +1,6 @@
+[{
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target" : { "namespace": "android_app", "package_name": "io.github.titenko.twa",
+                     "sha256_cert_fingerprints": ["46:C0:1D:3F:9A:3D:AE:1F:37:74:B0:3E:95:7D:09:E7:5F:09:A1:B4:7E:C9:FE:D2:DD:68:6C:20:13:54:94:77"] }
+      }
+]
